@@ -20,4 +20,4 @@ if __name__ == '__main__':
     tweet(api, 'This was tweeted from Python', './ost/dailyomorimusic-pfp.jpg')
 
 #Todo
-#https://omori.fandom.com/wiki/MUSIC add composer
+#https://omori.fandom.com/wiki/MUSIC add composer (change file metadataa?)

@@ -1,2 +1,2 @@
 # dailyomorimusic
- Posting songs from the OMORI OST everyday.
+ Posting songs from the OMORI OST everyday
