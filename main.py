@@ -1,33 +1,34 @@
 import tweepy
 import keys
-import ffmpeg
-import sys
-from pprint import pprint
+import os
+from tinytag import TinyTag
 
-def api():
-    auth = tweepy.OAuth1UserHandler(keys.api_key, keys.api_secret)
-    auth.set_access_token(keys.access_token, keys.access_token_secret)
+client = tweepy.Client(keys.bearer_token, keys.api_key, keys.api_secret, keys.access_token, keys.access_token_secret)
+auth = tweepy.OAuth1UserHandler(keys.api_key, keys.api_secret, keys.access_token, keys.access_token_secret)
+api = tweepy.API(auth)
 
-    return tweepy.API(auth)
+def get_all_songs(folder):
+    songs = []
+    for file in os.listdir(folder):
+        songs.append(file[16:-4])
+    print(songs)
 
-def tweet(api: tweepy.API, message: str, image_path=None):
-    if image_path:
-        api.update_status_with_media(message, image_path)
-    else:
-        api.update_status(message)
+def get_all_composers(folder):
+    songs = []
+    for file in os.listdir(folder):
+        song = TinyTag.get(folder + '/' + file)
+        print('Composer: ' + song.artist)
+        songs.append(song.artist)
+    #print(songs)
 
-    print("Tweeted successfully!")
+def create_text(song_name, composer_name):
+    print('text created')
 
-if __name__ == '__main__':
-    api = api()
+def post_tweet(file):
+    media = api.media_upload(file)
+    api.update_status(text, media_ids = [media.media_id_string])
 
-    # read the audio/video file from the command line arguments
-    media_file = ''./ost/OMORI OST - 001 Title [9d9e6XmNn9Q].mp4'
-    # uses ffprobe command to extract all possible metadata from the media file
-    pprint(ffmpeg.probe(media_file)["streams"])
-
-
-    #tweet(api, 'This was tweeted from Python', './ost/dailyomorimusic-pfp.jpg')
-
-#Todo
-#https://omori.fandom.com/wiki/MUSIC add composer (change file metadataa?)
+#post_tweet('./ost/OMORI OST - 008 Trouble Brewing.mp4')
+#get_all_songs('./ost')
+get_all_composers('./ost')
+print("Tweeted successfully!")
