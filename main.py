@@ -16,7 +16,15 @@ USED_FOLDER = "./ost-used"
 
 #region FILE EXPLORER
 
+def move_all_files(source_folder, target_folder):
+    files = os.listdir(source_folder)
+    for file in files:
+        shutil.move(os.path.join(source_folder, file), target_folder)
+    print("Moved all files successfully!")
+
 def get_random_file(folder):
+    if len(os.listdir(folder)) == 0:
+        move_all_files(USED_FOLDER, OST_FOLDER)
     return random.choice(os.listdir(folder))
 
 def move_file(file, folder):
@@ -49,4 +57,4 @@ def post_tweet(text, file):
 today_file = get_random_file(OST_FOLDER)
 print(create_tweet_text(today_file))
 post_tweet(create_tweet_text(today_file), OST_FOLDER + '/' + today_file)
-move_file(OST_FOLDER + '/' + today_file, USED_FOLDER)
+#move_file(OST_FOLDER + '/' + today_file, USED_FOLDER)
