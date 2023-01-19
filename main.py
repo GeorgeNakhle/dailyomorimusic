@@ -4,12 +4,24 @@ import os
 import random
 import shutil
 from tinytag import TinyTag
+from datetime import date
 import schedule
 import time
 
 client = tweepy.Client(keys.bearer_token, keys.api_key, keys.api_secret, keys.access_token, keys.access_token_secret)
 auth = tweepy.OAuth1UserHandler(keys.api_key, keys.api_secret, keys.access_token, keys.access_token_secret)
 api = tweepy.API(auth)
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 OST_FOLDER = "./ost"
 USED_FOLDER = "./ost-used"
@@ -20,7 +32,7 @@ def move_all_files(source_folder, target_folder):
     files = os.listdir(source_folder)
     for file in files:
         shutil.move(os.path.join(source_folder, file), target_folder)
-    print("Moved all files successfully!")
+    print(bcolors.OKGREEN + "Moved all files successfully!" + bcolors.ENDC)
 
 def get_random_file(folder):
     if len(os.listdir(folder)) == 0:
@@ -32,7 +44,7 @@ def move_file(file, folder):
 
 #endregion
 
-#region TWITTER
+#region POSTING
 
 def get_title(file):
         return file[16:-4]
@@ -44,17 +56,47 @@ def get_composition(file):
 def create_tweet_text(file):
     title = get_title(file)
     composition = get_composition(file)
-    tweet_text = title + "\n\nComposition: " + composition
+    tweet_text = title + "\nComposition: " + composition + "\n#OMORI"
+    print(bcolors.OKBLUE + tweet_text + bcolors.ENDC)
     return tweet_text
 
 def post_tweet(text, file):
     media = api.media_upload(filename=file, media_category="tweet_video")
     api.update_status(text, media_ids = [media.media_id_string])
-    print("Tweeted successfully!")
+    print(bcolors.OKGREEN + "Tweeted successfully!" + bcolors.ENDC)
 
 #endregion
 
-today_file = get_random_file(OST_FOLDER)
-print(create_tweet_text(today_file))
-post_tweet(create_tweet_text(today_file), OST_FOLDER + '/' + today_file)
-#move_file(OST_FOLDER + '/' + today_file, USED_FOLDER)
+#region LIKING
+
+def find_tweets():
+    tweets = api.search_tweets(q="#omori", lang="en", result_type="mixed", count=15)
+    for tweet in tweets:
+        print(bcolors.OKBLUE + tweet.text + bcolors.ENDC + "\n---------------")
+    return tweets
+
+def like_tweets(results):
+    count = 0
+    for result in results:
+        status = api.get_status(result.id)
+        if status.favorited == False:
+            result.favorite()
+            count+=1
+    print(bcolors.OKGREEN + "{} tweets liked successfully!".format(count) + bcolors.ENDC)
+
+#endregion
+
+def tasks():
+    today_file = get_random_file(OST_FOLDER)
+    tweet_text = create_tweet_text(today_file)
+    post_tweet(tweet_text, OST_FOLDER + '/' + today_file)
+    move_file(OST_FOLDER + '/' + today_file, USED_FOLDER)
+    like_tweets(find_tweets())
+    print(bcolors.OKGREEN + "Completed tasks for today!" + bcolors.ENDC)
+
+schedule.every().day.at("09:00").do(tasks)
+while True:
+    schedule.run_pending()
+    time.sleep(1)
+
+#Cloud hosting: https://www.pythonanywhere.com/
