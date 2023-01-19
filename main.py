@@ -4,7 +4,6 @@ import os
 import random
 import shutil
 from tinytag import TinyTag
-from datetime import date
 import schedule
 import time
 
@@ -98,5 +97,3 @@ schedule.every().day.at("09:00").do(tasks)
 while True:
     schedule.run_pending()
     time.sleep(1)
-
-#Cloud hosting: https://www.pythonanywhere.com/
