@@ -6,6 +6,7 @@ import shutil
 from tinytag import TinyTag
 import schedule
 import time
+import datetime
 
 client = tweepy.Client(keys.bearer_token, keys.api_key, keys.api_secret, keys.access_token, keys.access_token_secret)
 auth = tweepy.OAuth1UserHandler(keys.api_key, keys.api_secret, keys.access_token, keys.access_token_secret)
@@ -24,6 +25,7 @@ class bcolors:
 
 OST_FOLDER = "./ost"
 USED_FOLDER = "./ost-used"
+OWNER = "BluePinataSSBM"
 
 #region FILE EXPLORER
 
@@ -85,6 +87,18 @@ def like_tweets(results):
 
 #endregion
 
+#region ERROR DETECTION
+
+def get_account_id(account):
+    user = api.get_user(screen_name=account)
+    return user.id_str
+
+def message_account(id, error, time):
+    api.send_direct_message(id, "ERROR\n{}\nTimestamp: {}\nFix here: {}".format(str(error), time, "https://github.com/GeorgeNakhle/dailyomorimusic"))
+    print(bcolors.OKGREEN + "Direct message sent!" + bcolors.ENDC)
+
+#endregion
+
 def tasks():
     today_file = get_random_file(OST_FOLDER)
     tweet_text = create_tweet_text(today_file)
@@ -93,7 +107,13 @@ def tasks():
     like_tweets(find_tweets())
     print(bcolors.OKGREEN + "Completed tasks for today!" + bcolors.ENDC)
 
-schedule.every().day.at("09:00").do(tasks)
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+try:
+    schedule.every().day.at("09:00").do(tasks)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+except Exception as e:
+    timestamp = datetime.datetime.now()
+    print(bcolors.FAIL + "ERROR\n{}\nTimestamp: {}".format(str(e), timestamp) + bcolors.ENDC)
+    message_account(get_account_id(OWNER), str(e), timestamp)
+    exit()

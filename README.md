@@ -6,7 +6,7 @@
 
 ## About
 
-https://twitter.com/dailyomorimusic \
+(@dailyomorimusic)[https://twitter.com/dailyomorimusic] \
 Daily OMORI Music is a Twitter bot that post songs from the [OMORI OST](https://open.spotify.com/artist/4DoTDDfW3gkeyb06XrIHlg) everyday at **9:00AM PST**. The bot is written in Python and takes advantage of the [Tweepy](https://github.com/tweepy/tweepy) library to easily interface with [Twitter's API](https://developer.twitter.com/en/docs/twitter-api).
 
 ## Functionality
