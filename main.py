@@ -1,5 +1,5 @@
 import tweepy
-import keys
+from dotenv import load_dotenv
 import os
 import random
 import shutil
@@ -8,8 +8,9 @@ import schedule
 import time
 import datetime
 
-client = tweepy.Client(keys.bearer_token, keys.api_key, keys.api_secret, keys.access_token, keys.access_token_secret)
-auth = tweepy.OAuth1UserHandler(keys.api_key, keys.api_secret, keys.access_token, keys.access_token_secret)
+load_dotenv()
+client = tweepy.Client(os.getenv('bearer_token'), os.getenv('api_key'), os.getenv('api_secret'), os.getenv('access_token'), os.getenv('access_token_secret'))
+auth = tweepy.OAuth1UserHandler(os.getenv('api_key'), os.getenv('api_secret'), os.getenv('access_token'), os.getenv('access_token_secret'))
 api = tweepy.API(auth)
 
 #region CONSTANTS
