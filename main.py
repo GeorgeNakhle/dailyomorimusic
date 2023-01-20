@@ -12,6 +12,8 @@ client = tweepy.Client(keys.bearer_token, keys.api_key, keys.api_secret, keys.ac
 auth = tweepy.OAuth1UserHandler(keys.api_key, keys.api_secret, keys.access_token, keys.access_token_secret)
 api = tweepy.API(auth)
 
+#region CONSTANTS
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -26,6 +28,8 @@ class bcolors:
 OST_FOLDER = "./ost"
 USED_FOLDER = "./ost-used"
 OWNER = "BluePinataSSBM"
+
+#endregion
 
 #region FILE EXPLORER
 
@@ -99,6 +103,8 @@ def message_account(id, error, time):
 
 #endregion
 
+# region MAIN
+
 def tasks():
     today_file = get_random_file(OST_FOLDER)
     tweet_text = create_tweet_text(today_file)
@@ -117,3 +123,5 @@ except Exception as e:
     print(bcolors.FAIL + "ERROR\n{}\nTimestamp: {}".format(str(e), timestamp) + bcolors.ENDC)
     message_account(get_account_id(OWNER), str(e), timestamp)
     exit()
+
+#endregion
