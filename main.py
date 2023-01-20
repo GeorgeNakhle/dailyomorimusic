@@ -14,7 +14,7 @@ client = tweepy.Client(os.getenv('bearer_token'), os.getenv('api_key'), os.geten
 auth = tweepy.OAuth1UserHandler(os.getenv('api_key'), os.getenv('api_secret'), os.getenv('access_token'), os.getenv('access_token_secret'))
 api = tweepy.API(auth)
 
-#endregion CREDENTIALS
+#endregion
 
 #region CONSTANTS
 
