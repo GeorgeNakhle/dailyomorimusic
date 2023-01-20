@@ -7,10 +7,14 @@ from tinytag import TinyTag
 import time
 import datetime
 
+#region CREDENTIALS
+
 load_dotenv()
 client = tweepy.Client(os.getenv('bearer_token'), os.getenv('api_key'), os.getenv('api_secret'), os.getenv('access_token'), os.getenv('access_token_secret'))
 auth = tweepy.OAuth1UserHandler(os.getenv('api_key'), os.getenv('api_secret'), os.getenv('access_token'), os.getenv('access_token_secret'))
 api = tweepy.API(auth)
+
+#endregion CREDENTIALS
 
 #region CONSTANTS
 
@@ -115,7 +119,7 @@ def tasks():
 
 try:
     while True:
-        if (datetime.datetime.now().hour >= 9 and datetime.datetime.now() <= 12):
+        if (datetime.datetime.now().hour >= 9 and datetime.datetime.now().hour <= 12):
             tasks()
         time.sleep(3600 * 2.75) # 2hr 45min
 except Exception as e:
