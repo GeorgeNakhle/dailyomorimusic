@@ -4,7 +4,6 @@ import os
 import random
 import shutil
 from tinytag import TinyTag
-import schedule
 import time
 import datetime
 
@@ -115,10 +114,10 @@ def tasks():
     print(bcolors.OKGREEN + "Completed tasks for today!" + bcolors.ENDC)
 
 try:
-    schedule.every().day.at("09:00").do(tasks)
     while True:
-        schedule.run_pending()
-        time.sleep(1)
+        if (datetime.datetime.now().hour >= 9 and datetime.datetime.now() <= 12):
+            tasks()
+        time.sleep(3600 * 2.75) # 2hr 45min
 except Exception as e:
     timestamp = datetime.datetime.now()
     print(bcolors.FAIL + "ERROR\n{}\nTimestamp: {}".format(str(e), timestamp) + bcolors.ENDC)
