@@ -1,6 +1,6 @@
 import tweepy
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 import random
 import shutil
 from tinytag import TinyTag
@@ -10,8 +10,8 @@ import datetime
 #region CREDENTIALS
 
 load_dotenv()
-client = tweepy.Client(os.environ['bearer_token'], os.genvironetenv['api_key'], os.environ['api_secret'], os.environ['access_token'], os.environ['access_token_secret'])
-auth = tweepy.OAuth1UserHandler(os.environ['api_key'], os.environ['api_secret'], os.environ['access_token'], os.environ['access_token_secret'])
+client = tweepy.Client(os.environ['BEARER_TOKEN'], os.genvironetenv['API_KEY'], os.environ['API_SECRET'], os.environ['ACCESS_TOKEN'], os.environ['ACCESS_TOKEN_SECRET'])
+auth = tweepy.OAuth1UserHandler(os.environ['API_KEY'], os.environ['API_SECRET'], os.environ['ACCESS_TOKEN'], os.environ['ACCESS_TOKEN_SECRET'])
 api = tweepy.API(auth)
 
 #endregion
