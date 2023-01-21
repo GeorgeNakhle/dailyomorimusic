@@ -121,7 +121,7 @@ try:
     while True:
         if (datetime.datetime.now().hour >= 9 and datetime.datetime.now().hour <= 12):
             tasks()
-        time.sleep(3600 * 3) # 3hr
+        time.sleep(3 * 3600) # 3hr
 except Exception as e:
     timestamp = datetime.datetime.now()
     print(bcolors.FAIL + "ERROR\n{}\nTimestamp: {}".format(str(e), timestamp) + bcolors.ENDC)
