@@ -126,6 +126,6 @@ except Exception as e:
     timestamp = datetime.datetime.now()
     print(bcolors.FAIL + "ERROR\n{}\nTimestamp: {}".format(str(e), timestamp) + bcolors.ENDC)
     message_account(get_account_id(OWNER), str(e), timestamp)
-    exit()
+    exit(1)
 
 #endregion
