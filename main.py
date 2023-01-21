@@ -10,7 +10,7 @@ import datetime
 #region CREDENTIALS
 
 load_dotenv()
-client = tweepy.Client(os.environ['BEARER_TOKEN'], os.genvironetenv['API_KEY'], os.environ['API_SECRET'], os.environ['ACCESS_TOKEN'], os.environ['ACCESS_TOKEN_SECRET'])
+client = tweepy.Client(os.environ['BEARER_TOKEN'], os.environ['API_KEY'], os.environ['API_SECRET'], os.environ['ACCESS_TOKEN'], os.environ['ACCESS_TOKEN_SECRET'])
 auth = tweepy.OAuth1UserHandler(os.environ['API_KEY'], os.environ['API_SECRET'], os.environ['ACCESS_TOKEN'], os.environ['ACCESS_TOKEN_SECRET'])
 api = tweepy.API(auth)
 
