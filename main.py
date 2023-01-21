@@ -10,8 +10,8 @@ import datetime
 #region CREDENTIALS
 
 load_dotenv()
-client = tweepy.Client(os.getenv('bearer_token'), os.getenv('api_key'), os.getenv('api_secret'), os.getenv('access_token'), os.getenv('access_token_secret'))
-auth = tweepy.OAuth1UserHandler(os.getenv('api_key'), os.getenv('api_secret'), os.getenv('access_token'), os.getenv('access_token_secret'))
+client = tweepy.Client(os.environ['bearer_token'], os.genvironetenv['api_key'], os.environ['api_secret'], os.environ['access_token'], os.environ['access_token_secret'])
+auth = tweepy.OAuth1UserHandler(os.environ['api_key'], os.environ['api_secret'], os.environ['access_token'], os.environ['access_token_secret'])
 api = tweepy.API(auth)
 
 #endregion
@@ -121,12 +121,11 @@ try:
     while True:
         if (datetime.datetime.now().hour >= 9 and datetime.datetime.now().hour <= 12):
             tasks()
-        time.sleep(3 * 3600) # 3hr
+        time.sleep(3600 * 3) # 3hr
 except Exception as e:
     timestamp = datetime.datetime.now()
     print(bcolors.FAIL + "ERROR\n{}\nTimestamp: {}".format(str(e), timestamp) + bcolors.ENDC)
     message_account(get_account_id(OWNER), str(e), timestamp)
-    print(e)
-    exit(1)
+    exit()
 
 #endregion
