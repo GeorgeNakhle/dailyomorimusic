@@ -133,7 +133,7 @@ def tasks():
 
 try:
     while True:
-        if (datetime.datetime.now().hour >= 17 and datetime.datetime.now().hour <= 20): # UTC (9-12am PST)
+        if (datetime.datetime.now().hour >= 17 and datetime.datetime.now().hour <= 19): # UTC (9-12am PST)
             tasks()
         time.sleep(3600 * 3) # 3hr
 except Exception as e:
