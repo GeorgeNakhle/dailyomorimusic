@@ -112,7 +112,6 @@ def get_bio(account):
     return user.description
 
 def change_status(account, status):
-
     api.update_profile(description=get_bio(account)[:get_bio(account).rfind('\n')]) # Remove last line
     if (status):
         api.update_profile(description=get_bio(account) + "\nStatus: Online " + emoji.emojize(':green_circle:'))
