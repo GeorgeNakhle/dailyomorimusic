@@ -6,6 +6,7 @@ import shutil
 from tinytag import TinyTag
 import time
 import datetime
+import emoji
 
 #region CREDENTIALS
 
@@ -32,6 +33,7 @@ class bcolors:
 OST_FOLDER = "./ost"
 USED_FOLDER = "./ost-used"
 OWNER = "BluePinataSSBM"
+BOT ="dailyomorimusic"
 
 #endregion
 
@@ -88,7 +90,7 @@ def like_tweets(results):
     count = 0
     for result in results:
         status = api.get_status(result.id)
-        if status.favorited == False:
+        if (status.favorited == False):
             result.favorite()
             count+=1
     print(bcolors.OKGREEN + "{} tweets liked successfully!".format(count) + bcolors.ENDC)
@@ -102,8 +104,20 @@ def get_account_id(account):
     return user.id_str
 
 def message_account(id, error, time):
-    api.send_direct_message(id, "ERROR\n{}\nTimestamp: {}\nFix here: {}".format(str(error), time, "https://github.com/GeorgeNakhle/dailyomorimusic"))
+    api.send_direct_message(id, "ERROR\n{}\nTimestamp: {}".format(str(error), time))
     print(bcolors.OKGREEN + "Direct message sent!" + bcolors.ENDC)
+
+def get_bio(account):
+    user = api.get_user(screen_name=account)
+    return user.description
+
+def change_status(account, status):
+
+    api.update_profile(description=get_bio(account)[:get_bio(account).rfind('\n')]) # Remove last line
+    if (status):
+        api.update_profile(description=get_bio(account) + "\nStatus: Online " + emoji.emojize(':green_circle:'))
+    else:
+        api.update_profile(description=get_bio(account) + "\nStatus: Offline " + emoji.emojize(':red_circle:'))
 
 #endregion
 
@@ -115,17 +129,19 @@ def tasks():
     post_tweet(tweet_text, OST_FOLDER + '/' + today_file)
     move_file(OST_FOLDER + '/' + today_file, USED_FOLDER)
     like_tweets(find_tweets())
+    change_status(BOT, 1)
     print(bcolors.OKGREEN + "Completed tasks for today!" + bcolors.ENDC)
 
 try:
     while True:
-        if (datetime.datetime.now().hour >= 9 and datetime.datetime.now().hour <= 12):
+        if (datetime.datetime.now().hour >= 17 and datetime.datetime.now().hour <= 20): # UTC (9-12am PST)
             tasks()
         time.sleep(3600 * 3) # 3hr
 except Exception as e:
     timestamp = datetime.datetime.now()
     print(bcolors.FAIL + "ERROR\n{}\nTimestamp: {}".format(str(e), timestamp) + bcolors.ENDC)
     message_account(get_account_id(OWNER), str(e), timestamp)
+    change_status(BOT, 0)
     exit()
 
 #endregion
