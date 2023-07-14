@@ -73,7 +73,7 @@ def create_tweet_text(file):
 
 def post_tweet(text, file):
     media = api.media_upload(filename=file, media_category="tweet_video")
-    api.update_status(text, media_ids = [media.media_id_string])
+    api.create_tweet(text, media_ids = [media.media_id_string])
     print(bcolors.OKGREEN + "Tweeted successfully!" + bcolors.ENDC)
 
 #endregion
